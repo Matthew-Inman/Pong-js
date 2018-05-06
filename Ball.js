@@ -1,10 +1,20 @@
 var Ball = function(){
      this.x = width/2;
      this.y = height/2;
-     this.d = 20;
+     this.d = 20; //diameter
+     this.initial_y_speed = random(-7, 7);
 
-     this.xSpeed = -10;
-     this.ySpeed = random(-7, 7);
+     this.x_starting_speeds = [-10, 10];
+
+     this.get_starting_x_speed = function() {
+       let random_number = Math.floor(random(this.x_starting_speeds.length));
+       return this.x_starting_speeds[random_number];
+     }
+
+     this.xSpeed = this.get_starting_x_speed();
+     this.ySpeed = this.initial_y_speed;
+
+     this.yAcceleration = 10; // when ball hits edges of paddle
 
      this.show = function(){
           fill(255);
@@ -20,11 +30,25 @@ var Ball = function(){
           //paddle1 collision detection
           if (this.x - this.d/2 <= paddle1.w && this.y >= paddle1.y-paddle1.h/2
             && this.y <= paddle1.y + paddle1.h/2){
-               this.xSpeed = -this.xSpeed;
+              // if ball hits bottom part of paddle
+              if (this.y < paddle1.y + paddle1.h/2 && this.y > (paddle1.y + paddle1.h/2) - paddle1.h/5) {
+                this.ySpeed += this.yAcceleration;
+              } 
+              // if ball hits top part of paddle
+              else if ((this.y >= paddle1.y-paddle1.h/2 && this.y < (paddle1.y - paddle1.h/2) + paddle1.h/5)) {
+                this.ySpeed -= this.yAcceleration;
+              }
+              this.xSpeed = -this.xSpeed;
           }
           //paddle2 collision detection
           if (this.x + this.d/2 >= paddle2.x - paddle2.w/2 && this.y >= paddle2.y - paddle2.h/2
             && this.y <= paddle2.y + paddle2.h/2){
+              if (this.y < paddle2.y + paddle2.h/2 && this.y > (paddle2.y + paddle2.h/2) - paddle2.h/5) {
+                this.ySpeed += this.yAcceleration;
+              } 
+              else if ((this.y >= paddle2.y-paddle2.h/2 && this.y < (paddle2.y - paddle2.h/2) + paddle2.h/5)) {
+                this.ySpeed -= this.yAcceleration;
+              }
                this.xSpeed = -this.xSpeed;
           }
 
@@ -41,7 +65,8 @@ var Ball = function(){
           if (this.x < 0 || this.x > width){
                this.x = width/2;
                this.y = height/2;
-               this.ySpeed = random(-3,3);
+               this.xSpeed = this.get_starting_x_speed();
+               this.ySpeed = this.initial_y_speed;
           }
      }
 }
