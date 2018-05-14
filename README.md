@@ -1,4 +1,4 @@
 # Pong-js
-Unfinished classic pong game written with the p5 js framework.
-AI has not been programmed yet and is unbeatable.
-I will implement an option for 2 player or solo play.
+My first finished game as I was beginning to learn programming. 
+Classic pong game written with the p5 js framework.
+AI is very simplistic but works.
